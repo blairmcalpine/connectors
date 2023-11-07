@@ -18,7 +18,7 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "@lib/*": ["./src/app/_lib/*"],
+      "@lib/*": ["./src/lib/*"],
       "@components/*": ["./src/app/_components/*"],
       "@/*": ["./src/*"],
     },
