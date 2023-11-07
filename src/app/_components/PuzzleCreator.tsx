@@ -6,7 +6,8 @@ import {
   difficultyToColor,
   type Difficulty,
 } from "@lib/difficulty";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   FormProvider,
   useForm,
@@ -18,18 +19,24 @@ type CreateCategoryProps = {
   difficulty: Difficulty;
   open: boolean;
   onClick: () => void;
+  onFocus: () => void;
   categoryIdx: number;
+};
+
+type Word = {
+  word: string;
+  difficulty: Difficulty;
 };
 
 type Category = {
   description: string;
   difficulty: Difficulty;
-  words: string[];
 };
 
 type Puzzle = {
   categories: Category[];
   name: string;
+  words: Word[];
 };
 
 const defaultValues: Puzzle = {
@@ -39,6 +46,9 @@ const defaultValues: Puzzle = {
     difficulty,
     words: difficultyArray.map(() => ""),
   })),
+  words: difficultyArray.flatMap((difficulty) =>
+    difficultyArray.map(() => ({ difficulty, word: "" })),
+  ),
 };
 
 const getFirstError = (errors: unknown): string => {
@@ -70,7 +80,34 @@ export function PuzzleCreator() {
   const onSubmit: SubmitHandler<Puzzle> = (data) => {
     mutate(data);
   };
-  const { mutate } = api.puzzle.create.useMutation();
+  const { mutate, data, isLoading } = api.puzzle.create.useMutation();
+
+  if (data) {
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-violet">
+        <h1 className="text-4xl font-bold">Your Puzzle Has Been Created!</h1>
+        <p className="text-xl">{data.name}</p>
+        <div className="flex gap-4">
+          <button
+            className="flex w-40 justify-center rounded-full border-[1px] border-black py-3"
+            onClick={() =>
+              navigator.clipboard.writeText(
+                `${window.location.origin}/puzzle/${data.id}`,
+              )
+            }
+          >
+            Copy Link
+          </button>
+          <Link
+            href={`/puzzle/${data.id}`}
+            className="flex w-40 justify-center rounded-full bg-black py-3 text-white"
+          >
+            Try It Out
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <FormProvider {...methods}>
@@ -98,6 +135,7 @@ export function PuzzleCreator() {
             onClick={() =>
               open === difficulty ? setOpen(null) : setOpen(difficulty)
             }
+            onFocus={() => setOpen(difficulty)}
             categoryIdx={idx}
           />
         ))}
@@ -106,9 +144,10 @@ export function PuzzleCreator() {
         </p>
         <button
           type="submit"
-          className="text-md flex w-40 justify-center rounded-full bg-black py-3 text-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-40 justify-center rounded-full bg-black py-3 text-white disabled:cursor-not-allowed disabled:opacity-50"
+          disabled={Boolean(isLoading || Object.keys(errors).length)}
         >
-          Submit
+          {isLoading ? "Creating..." : "Create"}
         </button>
       </form>
     </FormProvider>
@@ -119,6 +158,7 @@ function CreateCategory({
   difficulty,
   open,
   onClick,
+  onFocus,
   categoryIdx,
 }: CreateCategoryProps) {
   const {
@@ -145,25 +185,28 @@ function CreateCategory({
       >
         <div className="flex flex-col gap-2 pt-2">
           <div className="flex h-20 gap-2">
-            {difficultyArray.map((_, wordIdx) => (
-              <input
-                key={wordIdx}
-                className={`w-full rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
-                  errors.categories?.[categoryIdx]?.words?.[wordIdx] &&
-                  "border-4 border-red-600"
-                }`}
-                placeholder={`Word ${wordIdx + 1}`}
-                {...register(`categories.${categoryIdx}.words.${wordIdx}`, {
-                  required: {
-                    value: true,
-                    message: `Please fill out word ${
-                      wordIdx + 1
-                    } in the ${difficulty} category.`,
-                  },
-                })}
-                maxLength={20}
-              />
-            ))}
+            {difficultyArray.map((_, idx) => {
+              const wordIdx = categoryIdx * difficultyArray.length + idx;
+              return (
+                <input
+                  key={idx}
+                  className={`w-full rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
+                    errors.words?.[wordIdx] && "border-4 border-red-600"
+                  }`}
+                  placeholder={`Word ${idx + 1}`}
+                  {...register(`words.${wordIdx}.word`, {
+                    required: {
+                      value: true,
+                      message: `Please fill out word ${
+                        idx + 1
+                      } in the ${difficulty} category.`,
+                    },
+                  })}
+                  maxLength={20}
+                  onFocus={onFocus}
+                />
+              );
+            })}
           </div>
           <input
             className={`h-20 rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
