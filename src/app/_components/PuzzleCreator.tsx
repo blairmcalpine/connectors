@@ -7,7 +7,7 @@ import {
   type Difficulty,
 } from "@lib/difficulty";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FormProvider,
   useForm,
