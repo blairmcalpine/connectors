@@ -34,6 +34,7 @@ export function Puzzle({ puzzle }: PuzzleProps) {
     );
     const difficulty = difficulties[0];
     const allSame = difficulties.every((d) => d === difficulty);
+    // LOGIC IS WRONG HERE
     const threeSame = difficulties.filter((d) => d === difficulty).length === 3;
     const oneDifferent =
       difficulties.filter((d) => d !== difficulty).length === 1;
