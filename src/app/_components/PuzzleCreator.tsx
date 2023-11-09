@@ -6,6 +6,7 @@ import {
   difficultyToColor,
   type Difficulty,
 } from "@lib/difficulty";
+import type { Puzzle } from "@lib/puzzle";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -21,22 +22,6 @@ type CreateCategoryProps = {
   onClick: () => void;
   onFocus: () => void;
   categoryIdx: number;
-};
-
-type Word = {
-  word: string;
-  difficulty: Difficulty;
-};
-
-type Category = {
-  description: string;
-  difficulty: Difficulty;
-};
-
-type Puzzle = {
-  categories: Category[];
-  name: string;
-  words: Word[];
 };
 
 const defaultValues: Puzzle = {
@@ -89,7 +74,7 @@ export function PuzzleCreator() {
         <p className="text-xl">{data.name}</p>
         <div className="flex gap-4">
           <button
-            className="flex w-40 justify-center rounded-full border-[1px] border-black py-3"
+            className="flex w-40 justify-center rounded-full border-[1px] border-black py-3 active:bg-gray"
             onClick={() =>
               navigator.clipboard.writeText(
                 `${window.location.origin}/puzzle/${data.id}`,
@@ -164,7 +149,11 @@ function CreateCategory({
   const {
     register,
     formState: { errors },
+    getValues,
   } = useFormContext<Puzzle>();
+  const difficultyDescription = getValues(
+    `categories.${categoryIdx}.description`,
+  ).toUpperCase();
   return (
     <div className="flex flex-col">
       <button
@@ -176,7 +165,9 @@ function CreateCategory({
         onClick={onClick}
         type="button"
       >
-        Create {difficulty} Category
+        {difficultyDescription
+          ? `${difficulty} - ${difficultyDescription}`
+          : `Create ${difficulty} Category`}
       </button>
       <div
         className={`overflow-hidden ${
