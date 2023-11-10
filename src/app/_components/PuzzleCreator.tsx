@@ -74,7 +74,7 @@ export function PuzzleCreator() {
         <p className="text-xl">{data.name}</p>
         <div className="flex gap-4">
           <button
-            className="flex w-40 justify-center rounded-full border-[1px] border-black py-3 active:bg-gray"
+            className="flex w-40 justify-center rounded-full border border-black py-3 active:bg-gray"
             onClick={() =>
               navigator.clipboard.writeText(
                 `${window.location.origin}/puzzle/${data.id}`,
