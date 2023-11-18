@@ -15,7 +15,7 @@ export default async function PuzzlePage({ params: { id } }: PuzzleProps) {
   return (
     <div className="flex h-[100dvh] flex-col">
       <Header title={puzzle.name.toUpperCase()} />
-      <main className="flex flex-grow items-center justify-center">
+      <main className="relative flex flex-grow items-center justify-center">
         <Puzzle puzzle={puzzle} />
       </main>
     </div>
