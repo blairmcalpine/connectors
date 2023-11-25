@@ -1,8 +1,8 @@
 "use client";
 
 import { Modal } from "@components/Modal";
-import { difficultyToColor, type Difficulty } from "@lib/difficulty";
-import type { Puzzle } from "@lib/puzzle";
+import { difficultyToColor } from "@lib/difficulty";
+import type { Guess, Puzzle } from "@lib/puzzle";
 import { shuffle } from "@lib/shuffle";
 import { useCallback, useMemo, useState } from "react";
 import toast from "react-hot-toast";
@@ -27,15 +27,16 @@ export function Puzzle({ puzzle }: PuzzleProps) {
   const [shuffledWords, setShuffledWords] = useState(originalWords);
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
   const [status, setStatus] = useState<Status>("none");
-  const [attempts, setAttempts] = useState(4);
-  const [guesses, setGuesses] = useState<Difficulty[][]>([]);
-  const [correctDifficulties, setCorrectDifficulties] = useState<Difficulty[]>(
-    [],
-  );
+  const [guesses, setGuesses] = useState<Guess[]>([]);
 
   const sortedSelectedWords = useMemo(
     () => [...selectedWords].sort((a, b) => a - b),
     [selectedWords],
+  );
+
+  const correctGuesses = useMemo(
+    () => guesses.filter(({ correct }) => correct),
+    [guesses],
   );
 
   const onWordClick = useCallback((idx: number) => {
@@ -53,14 +54,16 @@ export function Puzzle({ puzzle }: PuzzleProps) {
   }, []);
 
   const onSubmit = useCallback(async () => {
-    if (selectedWords.length !== 4) return;
+    if (sortedSelectedWords.length !== 4) return;
     setStatus("pending");
     await new Promise((res) => setTimeout(res, 700));
-    const difficulties = Array.from(sortedSelectedWords).map(
-      (idx) => originalWords[idx]!.difficulty,
+    const guessedWords = Array.from(sortedSelectedWords).map(
+      (idx) => originalWords[idx]!,
     );
-    const difficulty = difficulties[0]!;
-    const numberOfSame = difficulties.filter((d) => d === difficulty).length;
+    const difficulty = guessedWords[0]!.difficulty;
+    const numberOfSame = guessedWords.filter(
+      (word) => word.difficulty === difficulty,
+    ).length;
     if (numberOfSame === 4) {
       const newShuffledWords = [...shuffledWords];
       // Move 4 words to the start, not counting the already correct words
@@ -69,25 +72,12 @@ export function Puzzle({ puzzle }: PuzzleProps) {
         const idx = shuffledWords.findIndex(
           ({ idx }) => idx === sortedSelectedWords[i],
         );
-        if (idx !== i + correctDifficulties.length * 4) {
-          console.log(
-            "moving from ",
-            idx,
-            "to",
-            i + correctDifficulties.length * 4,
-          );
-
+        if (idx !== i + correctGuesses.length * 4) {
           hasMoved = true;
         }
-        console.log("deleting at", idx);
         newShuffledWords.splice(idx, 1);
-        console.log(
-          "inserting at",
-          i + correctDifficulties.length * 4,
-          originalWords[sortedSelectedWords[i]!]!,
-        );
         newShuffledWords.splice(
-          i + correctDifficulties.length * 4,
+          i + correctGuesses.length * 4,
           0,
           originalWords[sortedSelectedWords[i]!]!,
         );
@@ -96,39 +86,44 @@ export function Puzzle({ puzzle }: PuzzleProps) {
       if (hasMoved) {
         await new Promise((res) => setTimeout(res, 500));
       }
-      setCorrectDifficulties((prev) => [...prev, difficulty]);
       setSelectedWords([]);
+      setGuesses((prev) => [...prev, { words: guessedWords, correct: true }]);
     } else {
       if (numberOfSame === 3) {
         const oneDifferent =
-          difficulties.filter((d) => d !== difficulty).length === 1;
+          guessedWords.filter((word) => word.difficulty !== difficulty)
+            .length === 1;
         if (oneDifferent) {
           toast("One away...");
         }
       }
       if (numberOfSame === 1) {
-        const endDifficulty = difficulties.at(-1);
+        const endDifficulty = guessedWords.at(-1)?.difficulty;
         const otherThreeSame =
-          difficulties.filter((d) => d === endDifficulty).length === 3;
+          guessedWords.filter((word) => word.difficulty === endDifficulty)
+            .length === 3;
         if (otherThreeSame) {
           toast("One away...");
         }
       }
       setStatus("failure");
-      setAttempts((prev) => Math.max(prev - 1, 0));
       await new Promise((res) => setTimeout(res, 400));
+      setGuesses((prev) => [...prev, { words: guessedWords, correct: false }]);
     }
-    setGuesses((prev) => [...prev, difficulties]);
     setStatus("none");
-  }, [originalWords, selectedWords, shuffledWords, correctDifficulties.length]);
-
-  console.log({ shuffledWords, originalWords });
+  }, [
+    sortedSelectedWords,
+    originalWords,
+    shuffledWords,
+    correctGuesses.length,
+  ]);
 
   return (
     <div className="relative">
       <div className="flex flex-col items-center gap-6">
         <div className="relative flex h-[344px] w-[624px] flex-col">
-          {originalWords.map(({ word, idx, difficulty }) => {
+          {originalWords.map((wordObject) => {
+            const { idx, difficulty, word } = wordObject;
             const location = shuffledWords.findIndex(
               ({ idx: shuffledIdx }) => idx === shuffledIdx,
             );
@@ -136,14 +131,26 @@ export function Puzzle({ puzzle }: PuzzleProps) {
             const col = (location % 4) * 158;
             const idxInSelected = sortedSelectedWords.indexOf(idx);
             const selected = idxInSelected !== -1;
-            if (correctDifficulties.includes(difficulty)) {
+            const correct = correctGuesses.find(({ words }) =>
+              words.includes(wordObject),
+            );
+            if (correct) {
               if (location % 4 === 0) {
+                const category = puzzle.categories.find(
+                  ({ difficulty: categoryDifficulty }) =>
+                    categoryDifficulty === difficulty,
+                );
                 return (
                   <div
                     key={idx}
-                    className={`bg-${difficultyToColor[difficulty]} absolute h-20 w-full rounded-md text-xl font-bold text-white`}
+                    className={`bg-${difficultyToColor[difficulty]} absolute flex h-20 w-full flex-col items-center justify-center rounded-md text-xl uppercase`}
                     style={{ top: `${row}px` }}
-                  />
+                  >
+                    <span className="font-bold">{category!.description}</span>
+                    <span>
+                      {correct.words.map(({ word }) => word).join(", ")}
+                    </span>
+                  </div>
                 );
               }
               return null;
@@ -180,7 +187,9 @@ export function Puzzle({ puzzle }: PuzzleProps) {
               <div
                 key={idx}
                 className={`h-4 w-4 rounded-full bg-dark-gray transition-transform duration-300 ${
-                  idx + 1 > attempts ? "scale-0" : "scale-100"
+                  idx + 1 > 4 - (guesses.length - correctGuesses.length)
+                    ? "scale-0"
+                    : "scale-100"
                 }`}
               />
             ))}
@@ -210,7 +219,11 @@ export function Puzzle({ puzzle }: PuzzleProps) {
       </div>
       <Modal
         puzzleName={puzzle.name}
-        open={guesses.length === 4}
+        open={
+          correctGuesses.length === 4 ||
+          correctGuesses.length + 4 === guesses.length
+        }
+        correct={correctGuesses.length === 4}
         guesses={guesses}
       />
     </div>

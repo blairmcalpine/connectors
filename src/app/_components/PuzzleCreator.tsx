@@ -8,13 +8,14 @@ import {
 } from "@lib/difficulty";
 import type { Puzzle } from "@lib/puzzle";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   FormProvider,
   useForm,
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type CreateCategoryProps = {
   difficulty: Difficulty;
@@ -75,11 +76,11 @@ export function PuzzleCreator() {
         <div className="flex gap-4">
           <button
             className="flex w-40 justify-center rounded-full border border-black py-3 active:bg-gray"
-            onClick={() =>
-              navigator.clipboard.writeText(
-                `${window.location.origin}/puzzle/${data.id}`,
-              )
-            }
+            onClick={() => {
+              void navigator.clipboard
+                .writeText(`${window.location.origin}/puzzle/${data.id}`)
+                .then(() => toast("Copied to clipboard"));
+            }}
           >
             Copy Link
           </button>
@@ -149,25 +150,41 @@ function CreateCategory({
   const {
     register,
     formState: { errors },
-    getValues,
+    watch,
   } = useFormContext<Puzzle>();
-  const difficultyDescription = getValues(
+  const difficultyDescription = watch(
     `categories.${categoryIdx}.description`,
   ).toUpperCase();
+  const wordsObjs = watch(`words`).slice(
+    categoryIdx * difficultyArray.length,
+    (categoryIdx + 1) * difficultyArray.length,
+  );
+  const words = useMemo(
+    () =>
+      wordsObjs
+        .map(({ word }) => word)
+        .filter((word) => word)
+        .join(", "),
+    [wordsObjs],
+  );
+  console.log(wordsObjs);
   return (
     <div className="flex flex-col">
       <button
         className={`bg-${
           difficultyToColor[difficulty]
-        } h-20 rounded-md text-xl font-bold text-white ${
+        } flex h-20 flex-col items-center justify-center rounded-md text-xl text-white ${
           errors.categories?.[categoryIdx] ? "border-4 border-red-600" : ""
         }`}
         onClick={onClick}
         type="button"
       >
-        {difficultyDescription
-          ? `${difficulty} - ${difficultyDescription}`
-          : `Create ${difficulty} Category`}
+        <span className="font-bold">
+          {difficultyDescription
+            ? difficultyDescription.toUpperCase()
+            : `Create ${difficulty} Category`}
+        </span>
+        {words && <span className="uppercase">{words}</span>}
       </button>
       <div
         className={`overflow-hidden ${
