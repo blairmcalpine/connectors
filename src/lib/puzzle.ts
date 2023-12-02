@@ -5,7 +5,7 @@ export type Word = {
   difficulty: Difficulty;
 };
 
-type Category = {
+export type Category = {
   description: string;
   difficulty: Difficulty;
 };

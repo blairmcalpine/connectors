@@ -1,18 +1,13 @@
 import { Close } from "@icons/Close";
 import { difficultyToColor } from "@lib/difficulty";
-import { guessesToSplash, incorrectSplash, type Guess } from "@lib/puzzle";
+import { usePuzzle } from "@lib/hooks/usePuzzle";
+import { guessesToSplash, incorrectSplash } from "@lib/puzzle";
 import { useState } from "react";
 
-type ModalProps = {
-  puzzleName: string;
-  open: boolean;
-  correct: boolean;
-  guesses: Guess[];
-};
-
-export function Modal({ puzzleName, open, guesses, correct }: ModalProps) {
+export function Modal() {
+  const { name, status, correctGuesses, guesses } = usePuzzle();
   const [closed, setClosed] = useState(false);
-  if (!open || closed) return null;
+  if (status !== "complete" || closed) return null;
   return (
     <div className="absolute inset-0 flex items-center justify-center">
       <div
@@ -25,9 +20,11 @@ export function Modal({ puzzleName, open, guesses, correct }: ModalProps) {
           <Close />
         </button>
         <h2 className="mt-3 text-3xl font-bold">
-          {correct ? guessesToSplash[guesses.length] : incorrectSplash}
+          {correctGuesses.length === 4
+            ? guessesToSplash[guesses.length]
+            : incorrectSplash}
         </h2>
-        <span className="uppercase">{puzzleName}</span>
+        <span className="uppercase">{name}</span>
         <div className="flex flex-col gap-1">
           {guesses.map(({ words }, idx) => (
             <div key={idx} className="flex">

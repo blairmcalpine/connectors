@@ -19,9 +19,9 @@
     "baseUrl": ".",
     "paths": {
       "@lib/*": ["./src/lib/*"],
-      "@components/*": ["./src/app/_components/*"],
+      "@components/*": ["./src/components/*"],
       "@/*": ["./src/*"],
-      "@icons/*": ["./src/app/_icons/*"],
+      "@icons/*": ["./src/icons/*"],
     },
     "plugins": [{ "name": "next" }]
   },

@@ -1,6 +1,7 @@
 import { api } from "@/trpc/server";
 import { Header } from "@components/Header";
 import { Puzzle } from "@components/Puzzle";
+import { PuzzleContextProvider } from "@lib/hooks/usePuzzle";
 import { shuffle } from "@lib/shuffle";
 
 type PuzzleProps = {
@@ -16,7 +17,9 @@ export default async function PuzzlePage({ params: { id } }: PuzzleProps) {
     <div className="flex h-[100dvh] flex-col">
       <Header title={puzzle.name.toUpperCase()} />
       <main className="relative flex flex-grow items-center justify-center">
-        <Puzzle puzzle={puzzle} />
+        <PuzzleContextProvider puzzle={puzzle}>
+          <Puzzle />
+        </PuzzleContextProvider>
       </main>
     </div>
   );
