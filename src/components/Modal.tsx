@@ -1,11 +1,14 @@
 import { Close } from "@icons/Close";
-import { difficultyToColor } from "@lib/difficulty";
+import { difficultyToColor, difficultyToEmoji } from "@lib/difficulty";
+import { useNativeShare } from "@lib/hooks/useNativeShare";
 import { usePuzzle } from "@lib/hooks/usePuzzle";
-import { guessesToSplash, incorrectSplash } from "@lib/puzzle";
-import { useState } from "react";
+import { guessesToSplash, incorrectSplash, type Guess } from "@lib/puzzle";
+import { useMemo, useState } from "react";
 
 export function Modal() {
   const { name, status, correctGuesses, guesses } = usePuzzle();
+  const text = useMemo(() => guessesToSharable(guesses, name), [guesses, name]);
+  const share = useNativeShare(text);
   const [closed, setClosed] = useState(false);
   if (status !== "complete" || closed) return null;
   return (
@@ -37,10 +40,22 @@ export function Modal() {
             </div>
           ))}
         </div>
-        <button className="mt-5 flex justify-center rounded-full bg-black px-4 py-3 text-white">
+        <button
+          className="mt-5 flex justify-center rounded-full bg-black px-4 py-3 text-white"
+          onClick={share}
+        >
           Share Your Results
         </button>
       </div>
     </div>
   );
+}
+
+function guessesToSharable(guesses: Guess[], name: string) {
+  const emojis = guesses
+    .map(({ words }) =>
+      words.map(({ difficulty }) => difficultyToEmoji[difficulty]).join(""),
+    )
+    .join("\n");
+  return `Connectors\n${name.toUpperCase()}\n${emojis}`;
 }

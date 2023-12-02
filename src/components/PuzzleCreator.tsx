@@ -6,6 +6,7 @@ import {
   difficultyToColor,
   type Difficulty,
 } from "@lib/difficulty";
+import { useNativeShare } from "@lib/hooks/useNativeShare";
 import type { Puzzle } from "@lib/puzzle";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -15,7 +16,6 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import toast from "react-hot-toast";
 
 type CreateCategoryProps = {
   difficulty: Difficulty;
@@ -67,6 +67,7 @@ export function PuzzleCreator() {
     mutate(data);
   };
   const { mutate, data, isLoading } = api.puzzle.create.useMutation();
+  const share = useNativeShare(`${window.location.origin}/puzzle/${data?.id}`);
 
   if (data) {
     return (
@@ -76,11 +77,7 @@ export function PuzzleCreator() {
         <div className="flex gap-4">
           <button
             className="flex w-40 justify-center rounded-full border border-black py-3 active:bg-gray"
-            onClick={() => {
-              void navigator.clipboard
-                .writeText(`${window.location.origin}/puzzle/${data.id}`)
-                .then(() => toast("Copied to clipboard"));
-            }}
+            onClick={share}
           >
             Copy Link
           </button>
