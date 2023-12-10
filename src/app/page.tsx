@@ -12,6 +12,9 @@ export default function Home() {
         >
           Create a Puzzle
         </Link>
+        <Link href="/puzzle/GwenethDevlandIsadoratheLeekofBealsdelaysKerriGiraldoGasserand20sweetstoats">
+          Special page
+        </Link>
       </main>
     </div>
   );
