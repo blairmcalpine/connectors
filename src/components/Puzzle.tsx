@@ -17,9 +17,9 @@ export function Puzzle() {
     deselect,
   } = usePuzzle();
   return (
-    <div className="relative">
+    <div className="relative w-full px-2">
       <div className="flex flex-col items-center gap-6">
-        <div className="relative flex h-[344px] w-[624px] flex-col">
+        <div className="relative flex md:h-[344px] aspect-square md:aspect-auto max-w-[624px] w-full flex-col">
           {unshuffledWords.map((wordWithIndex, idx) => (
             <WordOrCategory key={idx} wordWithIndex={wordWithIndex} />
           ))}
@@ -81,8 +81,11 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
       shuffledWords.findIndex(({ idx: shuffledIdx }) => idx === shuffledIdx),
     [idx, shuffledWords],
   );
-  const row = Math.floor(location / 4) * 88;
-  const col = (location % 4) * 158;
+  const isMobile = (typeof window === "undefined") ? true : window.innerWidth ?? 1920 < 768;
+  const tileWidth = isMobile ? (window.innerWidth - 40) / 4 : 150;
+  const tileHeight = isMobile ? tileWidth : 80;
+  const row = Math.floor(location / 4) * (tileHeight + 8);
+  const col = (location % 4) * (tileWidth + 8);
   const idxInSelected = sortedSelectedWords.indexOf(idx);
   const selected = idxInSelected !== -1;
   const correct = correctGuesses.find(({ words }) =>
@@ -110,7 +113,7 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
   return (
     <button
       key={idx}
-      className={`absolute h-20 w-[150px] rounded-md text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none active:scale-90 ${
+      className={`absolute rounded-md text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none active:scale-90 ${
         selected ? "bg-dark-gray text-white" : "bg-gray"
       } ${selected && status === "pending" && `animate-bounce-up`} ${
         selected && status === "failure" && `animate-shake`
@@ -118,6 +121,8 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
       style={{
         top: `${row}px`,
         left: `${col}px`,
+        height: tileHeight,
+        width: tileWidth,
         transition:
           "left 0.5s ease-in-out, top 0.5s ease-in-out, transform 75ms ease-in-out",
         animationDelay:

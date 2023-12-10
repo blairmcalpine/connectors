@@ -95,7 +95,7 @@ export function PuzzleCreator() {
   return (
     <FormProvider {...methods}>
       <form
-        className="flex w-[624px] flex-col items-center gap-2"
+        className="flex w-full max-w-[624px] flex-col items-center gap-2"
         onSubmit={handleSubmit(onSubmit)}
       >
         <input
@@ -164,7 +164,6 @@ function CreateCategory({
         .join(", "),
     [wordsObjs],
   );
-  console.log(wordsObjs);
   return (
     <div className="flex flex-col">
       <button

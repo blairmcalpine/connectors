@@ -18,7 +18,7 @@ export function Modal() {
         onClick={() => setClosed(true)}
         tabIndex={-1}
       />
-      <div className="relative z-10 flex flex-col items-center justify-center gap-3 rounded-md bg-white px-36 py-8 shadow-lg">
+      <div className="relative z-10 flex flex-col items-center justify-center gap-3 rounded-md bg-white md:px-36 px-8 py-8 md:w-auto w-full shadow-lg">
         <button className="absolute right-4 top-4">
           <Close />
         </button>
