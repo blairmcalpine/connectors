@@ -81,11 +81,8 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
       shuffledWords.findIndex(({ idx: shuffledIdx }) => idx === shuffledIdx),
     [idx, shuffledWords],
   );
-  const isMobile = (typeof window === "undefined") ? true : window.innerWidth ?? 1920 < 768;
-  const tileWidth = isMobile ? (window.innerWidth - 40) / 4 : 150;
-  const tileHeight = isMobile ? tileWidth : 80;
-  const row = Math.floor(location / 4) * (tileHeight + 8);
-  const col = (location % 4) * (tileWidth + 8);
+  const row = Math.floor(location / 4);
+  const col = location % 4;
   const idxInSelected = sortedSelectedWords.indexOf(idx);
   const selected = idxInSelected !== -1;
   const correct = correctGuesses.find(({ words }) =>
@@ -100,37 +97,47 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
       return (
         <div
           key={idx}
-          className={`bg-${difficultyToColor[difficulty]} absolute flex h-20 w-full flex-col items-center justify-center rounded-md text-xl uppercase`}
-          style={{ top: `${row}px` }}
+          className="absolute left-0 h-1/4 w-full"
+          style={{ top: `${row * 25}%`, paddingTop: `${row ? 8 : 0}px` }}
         >
-          <span className="font-bold">{category!.description}</span>
-          <span>{correct.words.map(({ word }) => word).join(", ")}</span>
+          <div
+            className={`bg-${difficultyToColor[difficulty]} flex h-full w-full flex-col items-center justify-center rounded-md text-xl uppercase`}
+          >
+            <span className="font-bold">{category!.description}</span>
+            <span>{correct.words.map(({ word }) => word).join(", ")}</span>
+          </div>
         </div>
       );
     }
     return null;
   }
   return (
-    <button
-      key={idx}
-      className={`absolute rounded-md text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none active:scale-90 ${
-        selected ? "bg-dark-gray text-white" : "bg-gray"
-      } ${selected && status === "pending" && `animate-bounce-up`} ${
-        selected && status === "failure" && `animate-shake`
-      }`}
+    <div
+      className="absolute h-1/4 w-1/4"
       style={{
-        top: `${row}px`,
-        left: `${col}px`,
-        height: tileHeight,
-        width: tileWidth,
-        transition:
-          "left 0.5s ease-in-out, top 0.5s ease-in-out, transform 75ms ease-in-out",
-        animationDelay:
-          status === "pending" ? `${idxInSelected * 100}ms` : undefined,
+        paddingTop: `${row ? 8 : 0}px`,
+        paddingLeft: `${col ? 8 : 0}px`,
+        top: `${row * 25}%`,
+        left: `${col * 25}%`,
+        transition: "left 0.5s ease-in-out, top 0.5s ease-in-out",
       }}
-      onClick={() => onWordClick(idx)}
     >
-      {word}
-    </button>
+      <button
+        key={idx}
+        className={`h-full w-full rounded-md text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none active:scale-90 ${
+          selected ? "bg-dark-gray text-white" : "bg-gray"
+        } ${selected && status === "pending" && `animate-bounce-up`} ${
+          selected && status === "failure" && `animate-shake`
+        }`}
+        style={{
+          transition: "transform 75ms ease-in-out",
+          animationDelay:
+            status === "pending" ? `${idxInSelected * 100}ms` : undefined,
+        }}
+        onClick={() => onWordClick(idx)}
+      >
+        {word}
+      </button>
+    </div>
   );
 }
