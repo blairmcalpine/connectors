@@ -124,13 +124,12 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
     >
       <button
         key={idx}
-        className={`h-full w-full rounded-md text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none active:scale-90 ${
+        className={`h-full w-full rounded-md text-center text-xl font-bold uppercase transition-transform ease-in-out placeholder:text-white focus:outline-none active:scale-90 ${
           selected ? "bg-dark-gray text-white" : "bg-gray"
         } ${selected && status === "pending" && `animate-bounce-up`} ${
           selected && status === "failure" && `animate-shake`
         }`}
         style={{
-          transition: "transform 75ms ease-in-out",
           animationDelay:
             status === "pending" ? `${idxInSelected * 100}ms` : undefined,
         }}
