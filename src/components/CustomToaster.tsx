@@ -11,7 +11,7 @@ export function CustomToaster() {
     >
       {({ message, ariaProps, visible }) => (
         <div
-          className={`rounded-md bg-black p-3 text-lg text-white ${
+          className={`rounded-md bg-black p-3 text-lg text-white dark:bg-white dark:text-black ${
             visible ? "animate-fade-in" : "animate-fade-out"
           }`}
           {...ariaProps}

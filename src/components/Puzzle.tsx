@@ -42,19 +42,19 @@ export function Puzzle() {
         </div>
         <div className="flex gap-2.5">
           <button
-            className="flex justify-center rounded-full border border-black px-4 py-3 active:bg-gray"
+            className="flex justify-center rounded-full border border-black px-4 py-3 active:bg-gray dark:border-white"
             onClick={shuffle}
           >
             Shuffle
           </button>
           <button
-            className="flex justify-center rounded-full border border-black px-4 py-3 active:bg-gray"
+            className="flex justify-center rounded-full border border-black px-4 py-3 active:bg-gray dark:border-white"
             onClick={deselect}
           >
             Deselect All
           </button>
           <button
-            className="flex justify-center rounded-full border bg-black px-4 py-3 text-white active:bg-gray disabled:border-disabled-gray disabled:bg-white disabled:text-disabled-gray"
+            className="flex justify-center rounded-full border bg-black px-4 py-3 text-white active:bg-gray disabled:border-disabled-gray disabled:bg-white disabled:text-disabled-gray dark:bg-white dark:text-black"
             disabled={status !== "submittable"}
             onClick={onSubmit}
           >
@@ -100,7 +100,7 @@ function WordOrCategory({ wordObject }: { wordObject: Word }) {
           style={{ top: `${row * 25}%`, paddingTop: `${row ? 8 : 0}px` }}
         >
           <div
-            className={`bg-${difficultyToColor[difficulty]} flex h-full w-full flex-col items-center justify-center rounded-md text-xl uppercase`}
+            className={`bg-${difficultyToColor[difficulty]} flex h-full w-full flex-col items-center justify-center rounded-md text-xl uppercase dark:text-black`}
           >
             <span className="font-bold">{category!.description}</span>
             <span>{correct.words.map(({ word }) => word).join(", ")}</span>
@@ -122,8 +122,8 @@ function WordOrCategory({ wordObject }: { wordObject: Word }) {
       }}
     >
       <button
-        className={`h-full w-full rounded-md text-center text-xl font-bold uppercase transition-transform ease-in-out placeholder:text-white focus:outline-none active:scale-90 ${
-          selected ? "bg-dark-gray text-white" : "bg-gray"
+        className={`h-full w-full rounded-md text-center text-xl font-bold uppercase transition-transform ease-in-out placeholder:text-white focus:outline-none active:scale-90 dark:text-black ${
+          selected ? "bg-dark-gray text-white dark:text-black" : "bg-gray"
         } ${selected && status === "pending" && `animate-bounce-up`} ${
           selected && status === "failure" && `animate-shake`
         }`}

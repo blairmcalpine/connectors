@@ -7,6 +7,7 @@ import {
   type Difficulty,
 } from "@lib/difficulty";
 import { useNativeShare } from "@lib/hooks/useNativeShare";
+import { useSSRWindow } from "@lib/hooks/useSSRWindow";
 import type { Puzzle } from "@lib/puzzle";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -67,7 +68,10 @@ export function PuzzleCreator() {
     mutate(data);
   };
   const { mutate, data, isLoading } = api.puzzle.create.useMutation();
-  const share = useNativeShare(`${window.location.origin}/puzzle/${data?.id}`);
+  const { window } = useSSRWindow();
+  const { share, copyToClipboard } = useNativeShare(
+    `${window?.location.origin}/puzzle/${data?.id}`,
+  );
 
   if (data) {
     return (
@@ -76,14 +80,20 @@ export function PuzzleCreator() {
         <p className="text-xl">{data.name}</p>
         <div className="flex gap-4">
           <button
-            className="flex w-40 justify-center rounded-full border border-black py-3 active:bg-gray"
-            onClick={share}
+            className="flex w-40 justify-center rounded-full border border-black py-3 active:bg-gray dark:border-white"
+            onClick={copyToClipboard}
           >
             Copy Link
           </button>
+          <button
+            className="flex w-40 justify-center rounded-full border border-black py-3 active:bg-gray dark:border-white"
+            onClick={share}
+          >
+            Share
+          </button>
           <Link
             href={`/puzzle/${data.id}`}
-            className="flex w-40 justify-center rounded-full bg-black py-3 text-white"
+            className="flex w-40 justify-center rounded-full bg-black py-3 text-white dark:bg-white dark:text-black"
           >
             Try It Out
           </Link>
@@ -106,7 +116,7 @@ export function PuzzleCreator() {
           {...register("name", {
             required: {
               value: true,
-              message: "Please give your puzzle a title.",
+              message: "Please give your puzzle a name.",
             },
           })}
         />
@@ -127,7 +137,7 @@ export function PuzzleCreator() {
         </p>
         <button
           type="submit"
-          className="flex w-40 justify-center rounded-full bg-black py-3 text-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-40 justify-center rounded-full bg-black py-3 text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black"
           disabled={Boolean(isLoading || Object.keys(errors).length)}
         >
           {isLoading ? "Creating..." : "Create"}

@@ -8,7 +8,7 @@ import { useMemo, useState } from "react";
 export function Modal() {
   const { name, status, correctGuesses, guesses } = usePuzzle();
   const text = useMemo(() => guessesToSharable(guesses, name), [guesses, name]);
-  const share = useNativeShare(text);
+  const { share } = useNativeShare(text);
   const [closed, setClosed] = useState(false);
   if (status !== "complete" || closed) return null;
   return (
@@ -18,7 +18,7 @@ export function Modal() {
         onClick={() => setClosed(true)}
         tabIndex={-1}
       />
-      <div className="relative z-10 flex flex-col items-center justify-center gap-3 rounded-md bg-white md:px-36 px-8 py-8 md:w-auto w-full shadow-lg">
+      <div className="relative z-10 flex w-full flex-col items-center justify-center gap-3 rounded-md bg-white px-8 py-8 shadow-lg dark:bg-black md:w-auto md:px-36">
         <button className="absolute right-4 top-4">
           <Close />
         </button>
@@ -41,7 +41,7 @@ export function Modal() {
           ))}
         </div>
         <button
-          className="mt-5 flex justify-center rounded-full bg-black px-4 py-3 text-white"
+          className="mt-5 flex justify-center rounded-full bg-black px-4 py-3 text-white dark:bg-white dark:text-black"
           onClick={share}
         >
           Share Your Results
