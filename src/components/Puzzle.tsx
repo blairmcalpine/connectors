@@ -2,15 +2,16 @@
 
 import { Modal } from "@components/Modal";
 import { difficultyToColor } from "@lib/difficulty";
-import { usePuzzle, type WordWithIndex } from "@lib/hooks/usePuzzle";
+import { usePuzzle } from "@lib/hooks/usePuzzle";
 import type { Puzzle } from "@lib/puzzle";
+import type { Word } from "@prisma/client";
 import { useMemo } from "react";
 
 export function Puzzle() {
   const {
     status,
     onSubmit,
-    unshuffledWords,
+    initialShuffle,
     correctGuesses,
     guesses,
     shuffle,
@@ -19,9 +20,9 @@ export function Puzzle() {
   return (
     <div className="relative w-full px-2">
       <div className="flex flex-col items-center gap-6">
-        <div className="relative flex md:h-[344px] aspect-square md:aspect-auto max-w-[624px] w-full flex-col">
-          {unshuffledWords.map((wordWithIndex, idx) => (
-            <WordOrCategory key={idx} wordWithIndex={wordWithIndex} />
+        <div className="relative flex aspect-square w-full max-w-[624px] flex-col md:aspect-auto md:h-[344px]">
+          {initialShuffle.map((word, idx) => (
+            <WordOrCategory key={idx} wordObject={word} />
           ))}
         </div>
         <div className="flex items-center gap-2.5">
@@ -66,27 +67,26 @@ export function Puzzle() {
   );
 }
 
-function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
+function WordOrCategory({ wordObject }: { wordObject: Word }) {
   const {
     shuffledWords,
-    sortedSelectedWords,
     status,
     onWordClick,
     correctGuesses,
     categories,
+    selectedWords,
   } = usePuzzle();
-  const { idx, difficulty, word } = wordWithIndex;
+  const { difficulty, word } = wordObject;
   const location = useMemo(
-    () =>
-      shuffledWords.findIndex(({ idx: shuffledIdx }) => idx === shuffledIdx),
-    [idx, shuffledWords],
+    () => shuffledWords.indexOf(wordObject),
+    [shuffledWords, wordObject],
   );
   const row = Math.floor(location / 4);
   const col = location % 4;
-  const idxInSelected = sortedSelectedWords.indexOf(idx);
+  const idxInSelected = selectedWords.indexOf(wordObject);
   const selected = idxInSelected !== -1;
   const correct = correctGuesses.find(({ words }) =>
-    words.includes(wordWithIndex),
+    words.includes(wordObject),
   );
   if (correct) {
     if (location % 4 === 0) {
@@ -96,7 +96,6 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
       );
       return (
         <div
-          key={idx}
           className="absolute left-0 h-1/4 w-full"
           style={{ top: `${row * 25}%`, paddingTop: `${row ? 8 : 0}px` }}
         >
@@ -123,7 +122,6 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
       }}
     >
       <button
-        key={idx}
         className={`h-full w-full rounded-md text-center text-xl font-bold uppercase transition-transform ease-in-out placeholder:text-white focus:outline-none active:scale-90 ${
           selected ? "bg-dark-gray text-white" : "bg-gray"
         } ${selected && status === "pending" && `animate-bounce-up`} ${
@@ -133,7 +131,7 @@ function WordOrCategory({ wordWithIndex }: { wordWithIndex: WordWithIndex }) {
           animationDelay:
             status === "pending" ? `${idxInSelected * 100}ms` : undefined,
         }}
-        onClick={() => onWordClick(idx)}
+        onClick={() => onWordClick(wordObject)}
       >
         {word}
       </button>

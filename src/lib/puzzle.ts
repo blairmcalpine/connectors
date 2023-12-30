@@ -1,9 +1,5 @@
 import type { Difficulty } from "@lib/difficulty";
-
-export type Word = {
-  word: string;
-  difficulty: Difficulty;
-};
+import type { Word } from "@prisma/client";
 
 export type Category = {
   description: string;

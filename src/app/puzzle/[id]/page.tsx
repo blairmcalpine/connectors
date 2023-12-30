@@ -12,12 +12,12 @@ type PuzzleProps = {
 
 export default async function PuzzlePage({ params: { id } }: PuzzleProps) {
   const puzzle = await api.puzzle.get.query(id);
-  puzzle.words = shuffle(puzzle.words);
+  const shuffledWords = shuffle(puzzle.words);
   return (
     <div className="flex h-[100dvh] flex-col">
       <Header title={puzzle.name.toUpperCase()} />
       <main className="relative flex flex-grow items-center justify-center">
-        <PuzzleContextProvider puzzle={puzzle}>
+        <PuzzleContextProvider puzzle={puzzle} initialShuffle={shuffledWords}>
           <Puzzle />
         </PuzzleContextProvider>
       </main>

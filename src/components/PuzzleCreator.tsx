@@ -33,7 +33,7 @@ const defaultValues: Puzzle = {
     words: difficultyArray.map(() => ""),
   })),
   words: difficultyArray.flatMap((difficulty) =>
-    difficultyArray.map(() => ({ difficulty, word: "" })),
+    difficultyArray.map(() => ({ difficulty, word: "", id: "", puzzleId: "" })),
   ),
 };
 
@@ -95,12 +95,12 @@ export function PuzzleCreator() {
   return (
     <FormProvider {...methods}>
       <form
-        className="flex w-full max-w-[624px] flex-col items-center gap-2"
+        className="flex w-full max-w-[624px] flex-col items-center gap-2 p-2"
         onSubmit={handleSubmit(onSubmit)}
       >
         <input
           className={`h-20 w-full rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
-            errors.name && "border-4 border-red-600"
+            errors.name && "border-4 border-red-400"
           }`}
           placeholder="Puzzle Name"
           {...register("name", {
@@ -122,7 +122,7 @@ export function PuzzleCreator() {
             categoryIdx={idx}
           />
         ))}
-        <p className="font-bold text-red-600">
+        <p className="font-bold text-red-400">
           {getFirstError(errors) || "\u00a0"}
         </p>
         <button
@@ -170,7 +170,7 @@ function CreateCategory({
         className={`bg-${
           difficultyToColor[difficulty]
         } flex h-20 flex-col items-center justify-center rounded-md text-xl text-white ${
-          errors.categories?.[categoryIdx] ? "border-4 border-red-600" : ""
+          errors.categories?.[categoryIdx] ? "border-4 border-red-400" : ""
         }`}
         onClick={onClick}
         type="button"
@@ -195,7 +195,7 @@ function CreateCategory({
                 <input
                   key={idx}
                   className={`w-full rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
-                    errors.words?.[wordIdx] && "border-4 border-red-600"
+                    errors.words?.[wordIdx] && "border-4 border-red-400"
                   }`}
                   placeholder={`Word ${idx + 1}`}
                   {...register(`words.${wordIdx}.word`, {
@@ -215,7 +215,7 @@ function CreateCategory({
           <input
             className={`h-20 rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
               errors.categories?.[categoryIdx]?.description &&
-              "border-4 border-red-600"
+              "border-4 border-red-400"
             }`}
             placeholder="Category Name"
             {...register(`categories.${categoryIdx}.description`, {

@@ -1,5 +1,3 @@
-0. Fix puzzle view to not depend on javascript to check if mobile (use css only)
-0.5. Change puzzle solution words to be in same order as creation
 1. Add user auth to save their own puzzles and view them all
 2. Add a timer
 2.5 Add a dark mode
