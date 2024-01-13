@@ -62,4 +62,41 @@ export const puzzleRouter = createTRPCRouter({
     }
     return puzzle;
   }),
+  recent: publicProcedure.query(async ({ ctx }) => {
+    const puzzles = await ctx.db.puzzle.findMany({
+      include: {
+        words: {
+          orderBy: { difficulty: "asc" },
+        },
+        categories: {
+          orderBy: { difficulty: "asc" },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 20,
+    });
+    return puzzles;
+  }),
+  popular: publicProcedure.query(async ({ ctx }) => {
+    const puzzles = await ctx.db.puzzle.findMany({
+      include: {
+        words: {
+          orderBy: { difficulty: "asc" },
+        },
+        categories: {
+          orderBy: { difficulty: "asc" },
+        },
+        completions: true,
+      },
+      orderBy: {
+        completions: {
+          _count: "desc",
+        },
+      },
+      take: 20,
+    });
+    return puzzles;
+  }),
 });

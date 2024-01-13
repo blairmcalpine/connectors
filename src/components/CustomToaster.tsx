@@ -2,7 +2,7 @@
 
 import { Toaster } from "react-hot-toast";
 
-export function CustomToaster() {
+export const CustomToaster = () => {
   return (
     <Toaster
       position="top-center"
@@ -21,4 +21,4 @@ export function CustomToaster() {
       )}
     </Toaster>
   );
-}
+};

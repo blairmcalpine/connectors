@@ -1,9 +1,9 @@
 import { Header } from "@components/Header";
 import Link from "next/link";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div className="flex h-[100dvh] flex-col">
+    <div className="flex min-h-[100dvh] flex-col">
       <Header title="Connectors" />
       <main className="flex flex-grow items-center justify-center">
         <Link
@@ -18,4 +18,6 @@ export default function Home() {
       </main>
     </div>
   );
-}
+};
+
+export default Home;

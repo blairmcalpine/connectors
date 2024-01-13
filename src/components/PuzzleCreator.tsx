@@ -54,7 +54,7 @@ const getFirstError = (errors: unknown): string => {
   return "";
 };
 
-export function PuzzleCreator() {
+export const PuzzleCreator = () => {
   const [open, setOpen] = useState<Difficulty | null>(null);
   const methods = useForm<Puzzle>({
     defaultValues,
@@ -75,7 +75,7 @@ export function PuzzleCreator() {
 
   if (data) {
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-violet">
+      <div className="bg-violet flex h-full w-full flex-col items-center justify-center gap-4">
         <h1 className="text-4xl font-bold">Your Puzzle Has Been Created!</h1>
         <p className="text-xl">{data.name}</p>
         <div className="flex gap-4">
@@ -109,7 +109,7 @@ export function PuzzleCreator() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <input
-          className={`h-20 w-full rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
+          className={`h-20 w-full rounded-md bg-gray text-center text-xl font-bold placeholder:text-white focus:outline-none dark:text-black ${
             errors.name && "border-4 border-red-400"
           }`}
           placeholder="Puzzle Name"
@@ -145,15 +145,15 @@ export function PuzzleCreator() {
       </form>
     </FormProvider>
   );
-}
+};
 
-function CreateCategory({
+const CreateCategory = ({
   difficulty,
   open,
   onClick,
   onFocus,
   categoryIdx,
-}: CreateCategoryProps) {
+}: CreateCategoryProps) => {
   const {
     register,
     formState: { errors },
@@ -204,7 +204,7 @@ function CreateCategory({
               return (
                 <input
                   key={idx}
-                  className={`w-full rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
+                  className={`w-full rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none dark:text-black ${
                     errors.words?.[wordIdx] && "border-4 border-red-400"
                   }`}
                   placeholder={`Word ${idx + 1}`}
@@ -240,4 +240,4 @@ function CreateCategory({
       </div>
     </div>
   );
-}
+};

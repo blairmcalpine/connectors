@@ -3,11 +3,10 @@
 import { Modal } from "@components/Modal";
 import { difficultyToColor } from "@lib/difficulty";
 import { usePuzzle } from "@lib/hooks/usePuzzle";
-import type { Puzzle } from "@lib/puzzle";
 import type { Word } from "@prisma/client";
 import { useMemo } from "react";
 
-export function Puzzle() {
+export const Puzzle = () => {
   const {
     status,
     onSubmit,
@@ -31,7 +30,7 @@ export function Puzzle() {
             {Array.from(Array(4)).map((_, idx) => (
               <div
                 key={idx}
-                className={`h-4 w-4 rounded-full bg-dark-gray transition-transform duration-300 ${
+                className={`h-4 w-4 rounded-full bg-dark-gray transition-transform duration-300 dark:bg-gray ${
                   idx + 1 > 4 - (guesses.length - correctGuesses.length)
                     ? "scale-0"
                     : "scale-100"
@@ -54,7 +53,7 @@ export function Puzzle() {
             Deselect All
           </button>
           <button
-            className="flex justify-center rounded-full border bg-black px-4 py-3 text-white active:bg-gray disabled:border-disabled-gray disabled:bg-white disabled:text-disabled-gray dark:bg-white dark:text-black"
+            className="flex justify-center rounded-full border bg-black px-4 py-3 text-white active:bg-gray disabled:border-disabled-gray disabled:bg-white disabled:text-disabled-gray dark:bg-white dark:text-black dark:disabled:bg-black"
             disabled={status !== "submittable"}
             onClick={onSubmit}
           >
@@ -65,16 +64,20 @@ export function Puzzle() {
       <Modal />
     </div>
   );
-}
+};
 
-function WordOrCategory({ wordObject }: { wordObject: Word }) {
+type WordOrCategoryProps = {
+  wordObject: Word;
+};
+
+const WordOrCategory = ({ wordObject }: WordOrCategoryProps) => {
   const {
     shuffledWords,
     status,
     onWordClick,
     correctGuesses,
     categories,
-    selectedWords,
+    sortedSelectedWords,
   } = usePuzzle();
   const { difficulty, word } = wordObject;
   const location = useMemo(
@@ -83,7 +86,7 @@ function WordOrCategory({ wordObject }: { wordObject: Word }) {
   );
   const row = Math.floor(location / 4);
   const col = location % 4;
-  const idxInSelected = selectedWords.indexOf(wordObject);
+  const idxInSelected = sortedSelectedWords.indexOf(wordObject);
   const selected = idxInSelected !== -1;
   const correct = correctGuesses.find(({ words }) =>
     words.includes(wordObject),
@@ -123,7 +126,9 @@ function WordOrCategory({ wordObject }: { wordObject: Word }) {
     >
       <button
         className={`h-full w-full rounded-md text-center text-xl font-bold uppercase transition-transform ease-in-out placeholder:text-white focus:outline-none active:scale-90 dark:text-black ${
-          selected ? "bg-dark-gray text-white dark:text-black" : "bg-gray"
+          selected
+            ? "bg-dark-gray text-white dark:bg-disabled-gray dark:text-black"
+            : "bg-gray"
         } ${selected && status === "pending" && `animate-bounce-up`} ${
           selected && status === "failure" && `animate-shake`
         }`}
@@ -137,4 +142,4 @@ function WordOrCategory({ wordObject }: { wordObject: Word }) {
       </button>
     </div>
   );
-}
+};

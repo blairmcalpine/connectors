@@ -10,10 +10,10 @@ import { getUrl, transformer } from "./shared";
 
 export const api = createTRPCReact<AppRouter>();
 
-export function TRPCReactProvider(props: {
+export const TRPCReactProvider = (props: {
   children: React.ReactNode;
   cookies: string;
-}) {
+}) => {
   const [queryClient] = useState(() => new QueryClient());
 
   const [trpcClient] = useState(() =>
@@ -35,7 +35,7 @@ export function TRPCReactProvider(props: {
           },
         }),
       ],
-    })
+    }),
   );
 
   return (
@@ -45,4 +45,4 @@ export function TRPCReactProvider(props: {
       </api.Provider>
     </QueryClientProvider>
   );
-}
+};

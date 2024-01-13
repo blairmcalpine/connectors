@@ -1,5 +1,6 @@
 "use client";
 
+import { useTimer } from "@lib/hooks/useTimer";
 import type { Category, Guess, Puzzle } from "@lib/puzzle";
 import { shuffle as arrayShuffle } from "@lib/shuffle";
 import type { Word } from "@prisma/client";
@@ -23,6 +24,7 @@ type PuzzleContextValues = {
   onSubmit: () => Promise<void>;
   correctGuesses: Guess[];
   selectedWords: Word[];
+  sortedSelectedWords: Word[];
   guesses: Guess[];
   shuffle: () => void;
   deselect: () => void;
@@ -47,18 +49,29 @@ export const PuzzleContextProvider = ({
   const [selectedWords, setSelectedWords] = useState<Word[]>([]);
   const [status, setStatus] = useState<Status>("guessing");
   const [guesses, setGuesses] = useState<Guess[]>([]);
+  const { setEndTime } = useTimer();
 
-  const shuffle = useCallback(
-    () => setShuffledWords(arrayShuffle(shuffledWords)),
-    [shuffledWords],
+  // Selected words sorted by the current shuffle position
+  const sortedSelectedWords = useMemo(
+    () =>
+      selectedWords.toSorted(
+        (a, b) => shuffledWords.indexOf(a) - shuffledWords.indexOf(b),
+      ),
+    [shuffledWords, selectedWords],
   );
-
-  const deselect = useCallback(() => setSelectedWords([]), []);
 
   const correctGuesses = useMemo(
     () => guesses.filter(({ correct }) => correct),
     [guesses],
   );
+
+  const shuffle = useCallback(
+    () =>
+      setShuffledWords(arrayShuffle(shuffledWords, correctGuesses.length * 4)),
+    [shuffledWords, correctGuesses.length],
+  );
+
+  const deselect = useCallback(() => setSelectedWords([]), []);
 
   const onWordClick = useCallback(
     (word: Word) => {
@@ -114,7 +127,12 @@ export const PuzzleContextProvider = ({
       }
       setSelectedWords([]);
       setGuesses((prev) => [...prev, { words: selectedWords, correct: true }]);
-      if (correctGuesses.length === 3) return setStatus("complete");
+      if (correctGuesses.length === 3) {
+        setEndTime(Date.now());
+        // Wait 1s before displaying modal
+        await sleep(1000);
+        return setStatus("complete");
+      }
     } else {
       if (numberOfSame === 3) {
         const oneDifferent =
@@ -137,8 +155,10 @@ export const PuzzleContextProvider = ({
       // Wait for failure animation to finish
       await sleep(400);
       setGuesses((prev) => [...prev, { words: selectedWords, correct: false }]);
-      if (correctGuesses.length + 3 === guesses.length)
+      if (correctGuesses.length + 3 === guesses.length) {
+        setEndTime(Date.now());
         return setStatus("complete");
+      }
     }
     setStatus("guessing");
   }, [
@@ -147,6 +167,7 @@ export const PuzzleContextProvider = ({
     correctGuesses.length,
     status,
     guesses.length,
+    setEndTime,
   ]);
 
   return (
@@ -156,6 +177,7 @@ export const PuzzleContextProvider = ({
         shuffledWords,
         initialShuffle,
         selectedWords,
+        sortedSelectedWords,
         onWordClick,
         onSubmit,
         correctGuesses,

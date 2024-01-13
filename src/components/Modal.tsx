@@ -1,20 +1,30 @@
 import { Close } from "@icons/Close";
 import { difficultyToColor, difficultyToEmoji } from "@lib/difficulty";
+import { formatDuration } from "@lib/formatTime";
 import { useNativeShare } from "@lib/hooks/useNativeShare";
 import { usePuzzle } from "@lib/hooks/usePuzzle";
+import { useTimer } from "@lib/hooks/useTimer";
 import { guessesToSplash, incorrectSplash, type Guess } from "@lib/puzzle";
 import { useMemo, useState } from "react";
 
-export function Modal() {
+export const Modal = () => {
   const { name, status, correctGuesses, guesses } = usePuzzle();
-  const text = useMemo(() => guessesToSharable(guesses, name), [guesses, name]);
+  const { startTime, endTime } = useTimer();
+  const formattedTime = useMemo(
+    () => formatDuration(endTime ? endTime - startTime : 0),
+    [endTime, startTime],
+  );
+  const text = useMemo(
+    () => guessesToSharable(guesses, name, formattedTime),
+    [guesses, name, formattedTime],
+  );
   const { share } = useNativeShare(text);
   const [closed, setClosed] = useState(false);
   if (status !== "complete" || closed) return null;
   return (
     <div className="absolute inset-0 flex items-center justify-center">
       <div
-        className="absolute inset-0 bg-white opacity-50"
+        className="absolute inset-0 bg-white opacity-50 dark:bg-black"
         onClick={() => setClosed(true)}
         tabIndex={-1}
       />
@@ -27,10 +37,11 @@ export function Modal() {
             ? guessesToSplash[guesses.length]
             : incorrectSplash}
         </h2>
-        <span className="uppercase">{name}</span>
-        <div className="flex flex-col gap-1">
+        <span>{name}</span>
+        <span>{formattedTime}</span>
+        <div className="flex flex-col gap-0.5">
           {guesses.map(({ words }, idx) => (
-            <div key={idx} className="flex">
+            <div key={idx} className="flex gap-0.5">
               {words.map(({ difficulty }, idx) => (
                 <div
                   key={idx}
@@ -49,13 +60,17 @@ export function Modal() {
       </div>
     </div>
   );
-}
+};
 
-function guessesToSharable(guesses: Guess[], name: string) {
+const guessesToSharable = (
+  guesses: Guess[],
+  name: string,
+  formattedTime: string,
+) => {
   const emojis = guesses
     .map(({ words }) =>
       words.map(({ difficulty }) => difficultyToEmoji[difficulty]).join(""),
     )
     .join("\n");
-  return `Connectors\n${name.toUpperCase()}\n${emojis}`;
-}
+  return `Connectors\n${name}\n${emojis}\n${formattedTime}`;
+};

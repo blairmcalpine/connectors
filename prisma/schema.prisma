@@ -21,8 +21,20 @@ model Puzzle {
   name       String
   categories Category[]
   words      Word[]
+  createdAt  DateTime   @default(now())
+  completions PuzzleCompletion[]
 
   @@index([readableId])
+}
+
+model PuzzleCompletion {
+  id          String    @id @default(cuid())
+  time        BigInt
+  puzzleId    String
+  puzzle      Puzzle    @relation(fields: [puzzleId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@index([puzzleId])
 }
 
 model Category {
