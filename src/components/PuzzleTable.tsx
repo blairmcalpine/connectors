@@ -3,7 +3,7 @@ import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
 import Link from "next/link";
 
 type PuzzleTableProps = {
-  puzzles: (Puzzle & { completions: PuzzleCompletion[] })[];
+  puzzles: (Puzzle & { completions?: PuzzleCompletion[] })[];
   plays?: boolean;
 };
 
@@ -27,7 +27,7 @@ export const PuzzleTable = ({ puzzles, plays }: PuzzleTableProps) => {
       </thead>
       <tbody>
         {puzzles.map((puzzle, idx) => (
-          <PuzzlePreview puzzle={puzzle} key={idx} plays={plays} />
+          <PuzzlePreview puzzle={puzzle} key={idx} />
         ))}
       </tbody>
     </table>
@@ -35,11 +35,10 @@ export const PuzzleTable = ({ puzzles, plays }: PuzzleTableProps) => {
 };
 
 type PuzzlePreviewProps = {
-  puzzle: Puzzle & { completions: PuzzleCompletion[] };
-  plays?: boolean;
+  puzzle: Puzzle & { completions?: PuzzleCompletion[] };
 };
 
-const PuzzlePreview = ({ puzzle, plays }: PuzzlePreviewProps) => {
+const PuzzlePreview = ({ puzzle }: PuzzlePreviewProps) => {
   return (
     <tr className="border-b border-disabled-gray py-4 text-2xl transition-colors last:border-b-0 hover:bg-white hover:bg-opacity-10">
       <td className="flex h-12 items-center">
@@ -47,7 +46,9 @@ const PuzzlePreview = ({ puzzle, plays }: PuzzlePreviewProps) => {
           {puzzle.name}
         </Link>
       </td>
-      {plays && <td className="h-12">{puzzle.completions.length}</td>}
+      {puzzle.completions && (
+        <td className="h-12">{puzzle.completions.length}</td>
+      )}
       <td className="h-12 text-right">
         {formatDistanceToNowStrict(puzzle.createdAt)} ago
       </td>
