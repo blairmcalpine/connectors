@@ -14,7 +14,10 @@ type MetadataProps = {
 export const generateMetadata = async ({ params: { id } }: MetadataProps) => {
   const puzzle = await api.puzzle.get.query(id);
   return {
-    title: `${puzzle.name} - Connectors`,
+    title: `Play  ${puzzle.name}`,
+    openGraph: {
+      title: `Play ${puzzle.name} - Connectors`,
+    },
   };
 };
 

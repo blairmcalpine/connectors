@@ -5,7 +5,7 @@ import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Recently Created Puzzles - Connectors",
+  title: "Recently Created Puzzles",
 };
 
 const Recent = async () => {

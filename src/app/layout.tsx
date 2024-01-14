@@ -13,13 +13,6 @@ const inter = Inter({
   variable: "--font-sans",
 });
 
-export const metadata = {
-  title: "Connectors",
-  description:
-    "A better version of New York Times' Connections game. Create your own puzzles and share them with others!",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
-};
-
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
@@ -52,3 +45,27 @@ const Footer = () => {
 };
 
 export default RootLayout;
+
+export const metadata = {
+  title: {
+    default: "Connectors",
+    template: "%s - Connectors",
+  },
+  description:
+    "A better version of New York Times' Connections game. Create your own puzzles and share them with others!",
+  applicationName: "Connectors",
+  keywords: ["Game", "Puzzle", "New York Times"],
+  category: "Game",
+  authors: [
+    { name: "Blair McAlpine", url: "https://github.com/blairmcalpine" },
+  ],
+  creator: "Blair McAlpine",
+  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  openGraph: {
+    title: "Connectors",
+    description:
+      "A better version of New York Times' Connections game. Create your own puzzles and share them with others!",
+    siteName: "Connectors",
+    type: "website",
+  },
+};

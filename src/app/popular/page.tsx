@@ -5,7 +5,7 @@ import type { Puzzle, PuzzleCompletion } from "@prisma/client";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Most Popular Puzzles - Connectors",
+  title: "Most Popular Puzzles",
 };
 
 const Popular = async () => {
