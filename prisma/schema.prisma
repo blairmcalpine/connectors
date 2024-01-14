@@ -29,7 +29,7 @@ model Puzzle {
 
 model PuzzleCompletion {
   id          String    @id @default(cuid())
-  time        BigInt
+  time        Int
   puzzleId    String
   puzzle      Puzzle    @relation(fields: [puzzleId], references: [id])
   createdAt   DateTime  @default(now())

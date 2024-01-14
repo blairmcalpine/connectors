@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 export const Timer = () => {
   const [delta, setDelta] = useState(0);
-  const { startTime, endTime } = useTimer();
+  const { startTime, completionTime } = useTimer();
   const intervalId = useRef<NodeJS.Timeout | undefined>(undefined);
   const formattedTime = useMemo(() => formatDuration(delta), [delta]);
   useEffect(() => {
@@ -17,11 +17,11 @@ export const Timer = () => {
   }, [startTime]);
 
   useEffect(() => {
-    if (endTime) {
+    if (completionTime) {
       clearInterval(intervalId.current);
-      setDelta(endTime - startTime);
+      setDelta(completionTime);
     }
-  }, [endTime, startTime]);
+  }, [completionTime]);
 
   return <span className="text-3xl font-light">{formattedTime}</span>;
 };

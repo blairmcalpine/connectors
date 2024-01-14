@@ -175,7 +175,6 @@ export const PuzzleContextProvider = ({
       value={{
         status,
         shuffledWords,
-        initialShuffle,
         selectedWords,
         sortedSelectedWords,
         onWordClick,
@@ -184,6 +183,7 @@ export const PuzzleContextProvider = ({
         guesses,
         shuffle,
         deselect,
+        initialShuffle,
         categories: puzzle.categories,
         name: puzzle.name,
       }}

@@ -27,6 +27,11 @@ const createValidator = z.object({
     .length(difficultyArray.length ** 2),
 });
 
+const completionValidator = z.object({
+  time: z.number().min(1, { message: "Please provide a valid time." }),
+  puzzleId: z.string().cuid({ message: "Please provide a valid puzzle cuid." }),
+});
+
 export const puzzleRouter = createTRPCRouter({
   create: publicProcedure
     .input(createValidator)
@@ -99,4 +104,11 @@ export const puzzleRouter = createTRPCRouter({
     });
     return puzzles;
   }),
+  completion: publicProcedure
+    .input(completionValidator)
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.puzzleCompletion.create({
+        data: input,
+      });
+    }),
 });

@@ -9,10 +9,10 @@ import { useMemo, useState } from "react";
 
 export const Modal = () => {
   const { name, status, correctGuesses, guesses } = usePuzzle();
-  const { startTime, endTime } = useTimer();
+  const { completionTime } = useTimer();
   const formattedTime = useMemo(
-    () => formatDuration(endTime ? endTime - startTime : 0),
-    [endTime, startTime],
+    () => formatDuration(completionTime ?? 0),
+    [completionTime],
   );
   const text = useMemo(
     () => guessesToSharable(guesses, name, formattedTime),

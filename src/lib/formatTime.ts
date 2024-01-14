@@ -5,8 +5,8 @@ export const formatDuration = (ms: number) => {
 
   const zeroPad = (num: number | undefined) => String(num).padStart(2, "0");
 
-  return [duration.hours, duration.minutes, duration.seconds]
-    .filter(Boolean)
-    .map(zeroPad)
-    .join(":");
+  const units = [duration.minutes, duration.seconds];
+  if (duration.hours) units.unshift(duration.hours);
+
+  return units.map(zeroPad).join(":");
 };

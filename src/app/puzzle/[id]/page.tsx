@@ -16,7 +16,7 @@ const PuzzlePage = async ({ params: { id } }: PuzzleProps) => {
   const shuffledWords = shuffle(puzzle.words);
   return (
     <div className="flex min-h-[100dvh] flex-col">
-      <TimerContextProvider>
+      <TimerContextProvider puzzleId={puzzle.id}>
         <Header title={puzzle.name} timer />
         <main className="relative flex flex-grow items-center justify-center">
           <PuzzleContextProvider puzzle={puzzle} initialShuffle={shuffledWords}>
