@@ -18,7 +18,7 @@ export const Modal = () => {
     () => guessesToSharable(guesses, name, formattedTime),
     [guesses, name, formattedTime],
   );
-  const { share } = useNativeShare(text);
+  const { share, copyToClipboard } = useNativeShare(text);
   const [closed, setClosed] = useState(false);
   if (status !== "complete" || closed) return null;
   return (
@@ -28,7 +28,7 @@ export const Modal = () => {
         onClick={() => setClosed(true)}
         tabIndex={-1}
       />
-      <div className="relative z-10 flex w-full flex-col items-center justify-center gap-3 rounded-md bg-white px-8 py-8 shadow-lg dark:bg-black md:w-auto md:px-36">
+      <div className="relative z-10 flex w-full flex-col items-center justify-center gap-3 rounded-md bg-white px-8 py-8 shadow-lg dark:border dark:border-white dark:bg-black md:w-auto md:px-36">
         <button className="absolute right-4 top-4">
           <Close />
         </button>
@@ -56,6 +56,12 @@ export const Modal = () => {
           onClick={share}
         >
           Share Your Results
+        </button>
+        <button
+          className="flex justify-center rounded-full border border-black px-4 py-3 dark:border-white"
+          onClick={copyToClipboard}
+        >
+          Copy Your Results
         </button>
       </div>
     </div>
