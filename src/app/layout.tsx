@@ -15,7 +15,8 @@ const inter = Inter({
 
 export const metadata = {
   title: "Connectors",
-  description: "Created by Blair McAlpine",
+  description:
+    "A better version of New York Times' Connections game. Create your own puzzles and share them with others!",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -37,7 +38,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 
 const Footer = () => {
   return (
-    <footer className="fixed inset-x-0 bottom-0 flex justify-center">
+    <footer className="fixed inset-x-0 bottom-0 flex justify-center bg-inherit ">
       <a
         href="https://github.com/blairmcalpine"
         className="flex items-center justify-center gap-2"

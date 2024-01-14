@@ -5,6 +5,19 @@ import { PuzzleContextProvider } from "@lib/hooks/usePuzzle";
 import { TimerContextProvider } from "@lib/hooks/useTimer";
 import { shuffle } from "@lib/shuffle";
 
+type MetadataProps = {
+  params: {
+    id: string;
+  };
+};
+
+export const generateMetadata = async ({ params: { id } }: MetadataProps) => {
+  const puzzle = await api.puzzle.get.query(id);
+  return {
+    title: `${puzzle.name} - Connectors`,
+  };
+};
+
 type PuzzleProps = {
   params: {
     id: string;

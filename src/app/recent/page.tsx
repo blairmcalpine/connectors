@@ -4,6 +4,10 @@ import type { Puzzle } from "@prisma/client";
 import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
 import Link from "next/link";
 
+export const metadata = {
+  title: "Recently Created Puzzles - Connectors",
+};
+
 const Recent = async () => {
   const puzzles = await api.puzzle.recent.query();
   return (

@@ -4,6 +4,10 @@ import { formatDuration } from "@lib/formatTime";
 import type { Puzzle, PuzzleCompletion } from "@prisma/client";
 import Link from "next/link";
 
+export const metadata = {
+  title: "Most Popular Puzzles - Connectors",
+};
+
 const Popular = async () => {
   const puzzles = await api.puzzle.popular.query();
   return (
