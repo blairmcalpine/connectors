@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 
+import { GitHub } from "@/icons/GitHub";
 import { TRPCReactProvider } from "@/trpc/react";
 import { CustomToaster } from "@components/CustomToaster";
 import type { ReactNode } from "react";
@@ -28,8 +29,24 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           {children}
         </TRPCReactProvider>
         <CustomToaster />
+        <Footer />
       </body>
     </html>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="fixed inset-x-0 bottom-0 flex justify-center">
+      <a
+        href="https://github.com/blairmcalpine"
+        className="flex items-center justify-center gap-2"
+        target="_blank"
+      >
+        <span>Created by Blair McAlpine</span>
+        <GitHub fill="currentColor" width={18} height={18} />
+      </a>
+    </footer>
   );
 };
 
