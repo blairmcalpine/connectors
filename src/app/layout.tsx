@@ -31,7 +31,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 
 const Footer = () => {
   return (
-    <footer className="fixed inset-x-0 bottom-0 flex justify-center bg-inherit ">
+    <footer className="fixed inset-x-0 bottom-0 flex justify-center bg-inherit">
       <a
         href="https://github.com/blairmcalpine"
         className="flex items-center justify-center gap-2"

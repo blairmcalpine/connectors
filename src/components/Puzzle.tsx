@@ -17,7 +17,7 @@ export const Puzzle = () => {
     deselect,
   } = usePuzzle();
   return (
-    <div className="relative w-full px-2">
+    <div className="relative w-full px-1">
       <div className="flex flex-col items-center gap-6">
         <div className="relative flex aspect-square w-full max-w-[624px] flex-col md:aspect-auto md:h-[344px]">
           {initialShuffle.map((word, idx) => (
@@ -115,10 +115,8 @@ const WordOrCategory = ({ wordObject }: WordOrCategoryProps) => {
   }
   return (
     <div
-      className="absolute h-1/4 w-1/4"
+      className="absolute h-1/4 w-1/4 p-1"
       style={{
-        paddingTop: `${row ? 8 : 0}px`,
-        paddingLeft: `${col ? 8 : 0}px`,
         top: `${row * 25}%`,
         left: `${col * 25}%`,
         transition: "left 0.5s ease-in-out, top 0.5s ease-in-out",

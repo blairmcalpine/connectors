@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Home = () => {
   return (
-    <div className="flex min-h-[100dvh] flex-col">
+    <div className="flex h-[100dvh] flex-col">
       <Header title="Connectors" />
       <main className="flex flex-grow flex-col items-center justify-center gap-6">
         <Link
