@@ -16,7 +16,7 @@ export default Loading;
 const PuzzleSkeleton = () => {
   return (
     <div className="relative w-full px-1">
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-3 md:gap-6">
         <div className="grid aspect-square w-full max-w-[624px] grid-cols-4 grid-rows-4 flex-col md:aspect-auto md:h-[344px]">
           {Array.from(Array(16)).map((_, idx) => (
             <div key={idx} className="p-1">

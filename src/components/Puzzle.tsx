@@ -18,7 +18,7 @@ export const Puzzle = () => {
   } = usePuzzle();
   return (
     <div className="relative w-full px-1">
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-3 md:gap-6">
         <div className="relative flex aspect-square w-full max-w-[624px] flex-col md:aspect-auto md:h-[344px]">
           {initialShuffle.map((word, idx) => (
             <WordOrCategory key={idx} wordObject={word} />
