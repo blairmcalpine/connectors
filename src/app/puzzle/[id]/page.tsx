@@ -21,6 +21,7 @@ export const generateMetadata = async ({ params: { id } }: MetadataProps) => {
         "A better version of New York Times' Connections game. Create your own puzzles and share them with others!",
       siteName: "Connectors",
       type: "website",
+      images: "/connectors.png",
     },
   };
 };

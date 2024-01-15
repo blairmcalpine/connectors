@@ -67,6 +67,7 @@ export const metadata = {
       "A better version of New York Times' Connections game. Create your own puzzles and share them with others!",
     siteName: "Connectors",
     type: "website",
+    images: "/connectors.png",
   },
   metadataBase: new URL("https://connectorsbeta.vercel.app"),
 };
