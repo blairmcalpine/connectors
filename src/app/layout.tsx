@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { GitHub } from "@/icons/GitHub";
 import { TRPCReactProvider } from "@/trpc/react";
 import { CustomToaster } from "@components/CustomToaster";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 const inter = Inter({
@@ -46,7 +47,7 @@ const Footer = () => {
 
 export default RootLayout;
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     default: "Connectors",
     template: "%s - Connectors",

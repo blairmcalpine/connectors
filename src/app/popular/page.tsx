@@ -1,10 +1,11 @@
 import { api } from "@/trpc/server";
 import { Header } from "@components/Header";
 import { formatDuration } from "@lib/formatTime";
+import { type Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Most Popular Puzzles",
 };
 

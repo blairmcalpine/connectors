@@ -1,10 +1,11 @@
 import { api } from "@/trpc/server";
 import { Header } from "@components/Header";
 import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
+import { type Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Recently Created Puzzles",
 };
 

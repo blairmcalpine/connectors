@@ -3,7 +3,6 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { difficultyArray } from "@lib/difficulty";
-import { TRPCError } from "@trpc/server";
 
 const createValidator = z.object({
   name: z.string().min(1, { message: "Please give your puzzle a name." }),
@@ -62,9 +61,6 @@ export const puzzleRouter = createTRPCRouter({
         },
       },
     });
-    if (!puzzle) {
-      throw new TRPCError({ message: "Puzzle not found", code: "NOT_FOUND" });
-    }
     return puzzle;
   }),
   recent: publicProcedure.query(async ({ ctx }) => {

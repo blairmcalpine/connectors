@@ -1,7 +1,8 @@
 import { Header } from "@components/Header";
 import { PuzzleCreator } from "@components/PuzzleCreator";
+import type { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Create a Puzzle",
 };
 
