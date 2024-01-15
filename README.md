@@ -1,6 +1,6 @@
 # 🔗 Connectors
 
-This is a [T3 Stack](https://create.t3.gg/) project that aims to create a better experience around playing New York Times' game [Connections](https://www.nytimes.com/games/connections).
+This is a [T3 Stack](https://create.t3.gg/) project that aims to create a better experience around playing New York Times' game [Connections](https://www.nytimes.com/games/connections). It is available to play right now at [connectorsbeta.vercel.app](https://connectorsbeta.vercel.app)!
 
 ## Features
 
