@@ -68,4 +68,5 @@ export const metadata = {
     siteName: "Connectors",
     type: "website",
   },
+  metadataBase: new URL("https://connectorsbeta.vercel.app"),
 };

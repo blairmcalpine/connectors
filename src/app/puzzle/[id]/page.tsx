@@ -17,6 +17,10 @@ export const generateMetadata = async ({ params: { id } }: MetadataProps) => {
     title: `Play  ${puzzle.name}`,
     openGraph: {
       title: `Play ${puzzle.name} - Connectors`,
+      description:
+        "A better version of New York Times' Connections game. Create your own puzzles and share them with others!",
+      siteName: "Connectors",
+      type: "website",
     },
   };
 };
@@ -32,7 +36,7 @@ const PuzzlePage = async ({ params: { id } }: PuzzleProps) => {
   const shuffledWords = shuffle(puzzle.words);
   return (
     <div className="flex h-[100dvh] flex-col">
-      <TimerContextProvider puzzleId={puzzle.id}>
+      <TimerContextProvider puzzleId={id}>
         <Header title={puzzle.name} timer />
         <main className="relative flex flex-grow items-center justify-center">
           <PuzzleContextProvider puzzle={puzzle} initialShuffle={shuffledWords}>
