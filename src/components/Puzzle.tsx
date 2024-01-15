@@ -123,7 +123,7 @@ const WordOrCategory = ({ wordObject }: WordOrCategoryProps) => {
       }}
     >
       <button
-        className={`h-full w-full rounded-md text-center text-xl font-bold uppercase transition-transform ease-in-out placeholder:text-white focus:outline-none active:scale-90 dark:text-black ${
+        className={`h-full w-full break-words rounded-md text-center text-xl font-bold uppercase transition-transform ease-in-out placeholder:text-white focus:outline-none active:scale-90 dark:text-black ${
           selected
             ? "bg-dark-gray text-white dark:bg-disabled-gray dark:text-black"
             : "bg-gray"
