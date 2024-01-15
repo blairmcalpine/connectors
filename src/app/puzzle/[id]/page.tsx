@@ -5,7 +5,7 @@ import { PuzzleContextProvider } from "@lib/hooks/usePuzzle";
 import { TimerContextProvider } from "@lib/hooks/useTimer";
 import { shuffle } from "@lib/shuffle";
 
-type PuzzlePageProps = {
+export type PuzzlePageProps = {
   params: {
     id: string;
   };
@@ -64,7 +64,6 @@ export const generateMetadata = async ({ params: { id } }: PuzzlePageProps) => {
         "A better version of New York Times' Connections game. Create your own puzzles and share them with others!",
       siteName: "Connectors",
       type: "website",
-      images: "/connectors.png",
     },
   };
 };
