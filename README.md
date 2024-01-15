@@ -1,27 +1,40 @@
-# Create T3 App
+# 🔗 Connectors
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is a [T3 Stack](https://create.t3.gg/) project that aims to create a better experience around playing New York Times' game [Connections](https://www.nytimes.com/games/connections).
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- Create your own game of Connectors and send them to your friends
+- Play your custom games of Connectors and share your results with the world
+- View the most popular custom games created
+- View the most recent custom games created
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## The Stack
 
-- [Next.js](https://nextjs.org)
-- [Prisma](https://prisma.io)
+Connectors uses the following technologies:
+
+- [NextJS](https://nextjs.org)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+- [Prisma](https://www.prisma.io/)
 
-## Learn More
+## Motivation
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+Connectors was a project created to enhance one of my favourite games for myself and my friends, along with getting more familiar with NextJS 14 and React Server Components. Connectors uses React Server Components to leverage vital data fetching and computation on the server, for less JavaScript on the client. It also takes advantage of the newest NextJS features, including the metadata API and NextJS fonts. Connectors is also fully responsive, and has __dark mode__!
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Local Deployment
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+To deploy a version of Connectors for yourself, you will need a MySQL database (and that's it!). Add the database URL to a `.env` file. Your `.env` file should look like this:
 
-## How do I deploy this?
+```bash
+DATABASE_URL=your database URL
+```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Then, run the following commands:
+
+```bash
+npm install
+npm run dev
+```
+
+Visiting [http://localhost:3000](http://localhost:3000) will show you the Connectors homepage.
