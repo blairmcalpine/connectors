@@ -52,13 +52,12 @@ export const PuzzleContextProvider = ({
   const { setEndTime } = useTimer();
 
   // Selected words sorted by the current shuffle position
-  const sortedSelectedWords = useMemo(
-    () =>
-      selectedWords.toSorted(
-        (a, b) => shuffledWords.indexOf(a) - shuffledWords.indexOf(b),
-      ),
-    [shuffledWords, selectedWords],
-  );
+  const sortedSelectedWords = useMemo(() => {
+    const newSelectedWords = [...selectedWords];
+    return newSelectedWords.sort(
+      (a, b) => shuffledWords.indexOf(a) - shuffledWords.indexOf(b),
+    );
+  }, [shuffledWords, selectedWords]);
 
   const correctGuesses = useMemo(
     () => guesses.filter(({ correct }) => correct),
