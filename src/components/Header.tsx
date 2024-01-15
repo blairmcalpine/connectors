@@ -10,8 +10,8 @@ type HeaderProps = {
 
 export const Header = ({ title, timer }: HeaderProps) => {
   return (
-    <header className="flex flex-col items-center gap-4 border-b py-8 md:flex-row md:items-end md:justify-between md:px-24 md:py-16">
-      <div className="flex items-center gap-4 md:items-end">
+    <header className="flex flex-col items-center gap-4 border-b py-8 md:flex-row md:items-end md:px-24 md:py-16">
+      <div className="flex items-end gap-4">
         <Link href="/">
           <Image
             src="/connectors.png"
