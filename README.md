@@ -20,7 +20,7 @@ Connectors uses the following technologies:
 
 ## Motivation
 
-Connectors was a project created to enhance one of my favourite games for myself and my friends, along with getting more familiar with NextJS 14 and React Server Components. Connectors uses React Server Components to leverage vital data fetching and computation on the server, for less JavaScript on the client. It also takes advantage of the newest NextJS features, including the metadata API and NextJS fonts. Connectors is also fully responsive, and has __dark mode__!
+Connectors was a project created to enhance one of my favourite games for myself and my friends, along with getting more familiar with NextJS 14 and React Server Components. Connectors uses React Server Components to leverage vital data fetching and computation on the server, for less JavaScript on the client. It also takes advantage of the newest NextJS features, including the metadata API, NextJS fonts, OpenGraph optimizationss, and __dynamic OpenGraph image generation for each puzzle__. Connectors is also fully viewport responsive, and has __dark mode__!
 
 ## Local Deployment
 
