@@ -17,7 +17,6 @@ export const size = {
 export const contentType = "image/png";
 
 export default async function Image({ params: { id } }: PuzzlePageProps) {
-  console.log("META URL", import.meta.url);
   const interBold = fetch(
     new URL("../../../../public/Inter-Bold.ttf", import.meta.url),
   ).then((res) => res.arrayBuffer());
