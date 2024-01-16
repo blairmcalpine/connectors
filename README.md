@@ -9,6 +9,10 @@ This is a [T3 Stack](https://create.t3.gg/) project that aims to create a better
 - View the most popular custom games created
 - View the most recent custom games created
 
+## Motivation
+
+Connectors was a project created to enhance one of my favourite games for myself and my friends, along with getting more familiar with NextJS 14 and React Server Components. Connectors uses React Server Components to leverage vital data fetching and computation on the server, for less JavaScript on the client. It also takes advantage of the newest NextJS features, including the metadata API, NextJS fonts, OpenGraph optimizationss, and __dynamic OpenGraph image generation for each puzzle__. Connectors is also fully viewport responsive, and has __dark mode__!
+
 ## The Stack
 
 Connectors uses the following technologies:
@@ -17,10 +21,6 @@ Connectors uses the following technologies:
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
 - [Prisma](https://www.prisma.io/)
-
-## Motivation
-
-Connectors was a project created to enhance one of my favourite games for myself and my friends, along with getting more familiar with NextJS 14 and React Server Components. Connectors uses React Server Components to leverage vital data fetching and computation on the server, for less JavaScript on the client. It also takes advantage of the newest NextJS features, including the metadata API and NextJS fonts. Connectors is also fully responsive, and has __dark mode__!
 
 ## Local Deployment
 
@@ -34,6 +34,7 @@ Then, run the following commands:
 
 ```bash
 npm install
+npm run db:push
 npm run dev
 ```
 
