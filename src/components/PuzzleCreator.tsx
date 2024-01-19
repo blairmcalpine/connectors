@@ -75,10 +75,12 @@ export const PuzzleCreator = () => {
 
   if (data) {
     return (
-      <div className="bg-violet flex h-full w-full flex-col items-center justify-center gap-4">
-        <h1 className="text-4xl font-bold">Your Puzzle Has Been Created!</h1>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+        <h1 className="text-center text-4xl font-bold">
+          Your Puzzle Has Been Created!
+        </h1>
         <p className="text-xl">{data.name}</p>
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 md:flex-row">
           <button
             className="flex w-40 justify-center rounded-full border border-black py-3 active:bg-gray dark:border-white"
             onClick={copyToClipboard}
@@ -223,7 +225,7 @@ const CreateCategory = ({
             })}
           </div>
           <input
-            className={`h-20 rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none ${
+            className={`h-20 rounded-md bg-gray text-center text-xl font-bold uppercase placeholder:text-white focus:outline-none dark:text-black ${
               errors.categories?.[categoryIdx]?.description &&
               "border-4 border-red-400"
             }`}

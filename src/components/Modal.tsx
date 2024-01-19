@@ -5,6 +5,7 @@ import { useNativeShare } from "@lib/hooks/useNativeShare";
 import { usePuzzle } from "@lib/hooks/usePuzzle";
 import { useTimer } from "@lib/hooks/useTimer";
 import { guessesToSplash, incorrectSplash, type Guess } from "@lib/puzzle";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 export const Modal = () => {
@@ -63,6 +64,12 @@ export const Modal = () => {
         >
           Copy Your Results
         </button>
+        <Link
+          className="flex justify-center rounded-full border border-black px-4 py-3 dark:border-white"
+          href="/create"
+        >
+          Create Your Own
+        </Link>
       </div>
     </div>
   );

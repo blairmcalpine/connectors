@@ -99,8 +99,8 @@ const WordOrCategory = ({ wordObject }: WordOrCategoryProps) => {
       );
       return (
         <div
-          className="absolute left-0 h-1/4 w-full"
-          style={{ top: `${row * 25}%`, paddingTop: `${row ? 8 : 0}px` }}
+          className="absolute left-0 h-1/4 w-full p-1"
+          style={{ top: `${row * 25}%` }}
         >
           <div
             className={`bg-${difficultyToColor[difficulty]} flex h-full w-full flex-col items-center justify-center rounded-md text-xl uppercase dark:text-black`}
