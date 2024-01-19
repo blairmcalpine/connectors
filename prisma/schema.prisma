@@ -31,7 +31,7 @@ model PuzzleCompletion {
   id          String    @id @default(cuid())
   time        Int
   puzzleId    String
-  puzzle      Puzzle    @relation(fields: [puzzleId], references: [id])
+  puzzle      Puzzle    @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
 
   @@index([puzzleId])
@@ -42,7 +42,7 @@ model Category {
   description String
   difficulty  Difficulty
   puzzleId    String
-  puzzle      Puzzle     @relation(fields: [puzzleId], references: [id])
+  puzzle      Puzzle     @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
 
   @@index([puzzleId])
 }
@@ -52,7 +52,7 @@ model Word {
   word       String
   difficulty Difficulty
   puzzleId   String
-  puzzle     Puzzle     @relation(fields: [puzzleId], references: [id])
+  puzzle     Puzzle     @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
 
   @@index([puzzleId])
 }
